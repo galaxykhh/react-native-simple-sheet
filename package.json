@@ -1,6 +1,6 @@
 {
   "name": "react-native-simple-sheet",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Simple bottom sheet for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -29,7 +29,7 @@
     "example": "yarn workspace react-native-simple-sheet-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
     "clean": "del-cli lib",
     "prepare": "bob build",
     "release": "release-it"

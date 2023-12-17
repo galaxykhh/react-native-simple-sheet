@@ -5,7 +5,7 @@ import React, {
     forwardRef,
     useImperativeHandle,
 } from 'react';
-import { Modal } from 'react-native';
+import { Modal, Platform } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import {
     runOnJS,
@@ -15,7 +15,6 @@ import {
     withTiming,
 } from 'react-native-reanimated';
 import { BottomSheet } from './BottomSheet';
-import { Platform } from 'react-native';
 
 export type SheetHandler = {
     show: () => void;
@@ -23,8 +22,10 @@ export type SheetHandler = {
 };
 
 export type SimpleSheetProps = PropsWithChildren<{
+    backgroundColor?: string;
     scrimColor?: string;
     handleShown?: boolean;
+    handleColor?: string;
 }>;
 
 const FAST_VELOCITY_POINT = 1000;
@@ -105,7 +106,9 @@ export const SimpleSheet = forwardRef<SheetHandler, SimpleSheetProps>(
                     sheetOptions={{
                         gesture: panGesture,
                         animatedStyle: sheetStyle,
+                        backgroundColor: props.backgroundColor,
                         handleShown: props.handleShown,
+                        handleColor: props.handleColor,
                         onLayout: setSheetHeight,
                     }}
                 >
