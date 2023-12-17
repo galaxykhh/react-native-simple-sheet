@@ -55,6 +55,14 @@ export default function App() {
     );
 }
 ```
+## Parameters
+| name            	| type    	| required 	| description               	| default   	|
+|-----------------	|---------	|----------	|---------------------------	|-----------	|
+| backgroundColor 	| string  	| false    	| Color of bottom sheet.    	| #FFFFFF   	|
+| scrimColor      	| string  	| false    	| Color of scrim (backdrop) 	| #11111188 	|
+| handleColor     	| string  	| false    	| Color of handle           	| #E5E7EB   	|
+| handleShown     	| boolean 	| false    	| Visibility of handle      	| true      	|
+
 
 ## Contributing
 
