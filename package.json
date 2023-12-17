@@ -36,8 +36,9 @@
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "react native bottom sheet",
+    "bottom sheet",
+    "reanimated"
   ],
   "repository": {
     "type": "git",
@@ -70,6 +71,8 @@
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-builder-bob": "^0.23.2",
+    "react-native-gesture-handler": "^2.14.0",
+    "react-native-reanimated": "^3.6.1",
     "release-it": "^15.0.0",
     "typescript": "^5.0.2"
   },
@@ -78,7 +81,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-reanimated": ">=3.0.0"
   },
   "workspaces": [
     "example"
@@ -123,12 +127,13 @@
       "prettier"
     ],
     "rules": {
+      "react-hooks/exhaustive-deps": "off",
       "prettier/prettier": [
         "error",
         {
           "quoteProps": "consistent",
           "singleQuote": true,
-          "tabWidth": 2,
+          "tabWidth": 4,
           "trailingComma": "es5",
           "useTabs": false
         }
