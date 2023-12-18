@@ -15,15 +15,17 @@ import {
     type GestureType,
     type ComposedGesture,
 } from 'react-native-gesture-handler';
-import { Handle } from './Handle';
 
-export type SheetProps = {
+export type SheetStyleProps = {
+    borderTopLeftRadius?: number;
+    borderTopRightRadius?: number;
+    sheetColor?: string;
+    maxHeight?: number;
+};
+
+export type SheetProps = SheetStyleProps & {
     gesture: ComposedGesture | GestureType;
     animatedStyle: AnimatedStyle<StyleProp<ViewStyle>>;
-    maxHeight?: number;
-    backgroundColor?: string;
-    handleShown?: boolean;
-    handleColor?: string;
     onLayout: (height: number) => void;
 };
 
@@ -37,9 +39,14 @@ export const Sheet: React.FC<PropsWithChildren<SheetProps>> = (props) => {
                     props.animatedStyle,
                     {
                         ...styles.sheet,
+                        borderTopLeftRadius:
+                            props.borderTopLeftRadius ??
+                            styles.sheet.borderTopLeftRadius,
+                        borderTopRightRadius:
+                            props.borderTopRightRadius ??
+                            styles.sheet.borderTopRightRadius,
                         backgroundColor:
-                            props.backgroundColor ??
-                            styles.sheet.backgroundColor,
+                            props.sheetColor ?? styles.sheet.backgroundColor,
                         maxHeight: props.maxHeight ?? height * 0.8,
                     },
                 ]}
@@ -49,9 +56,6 @@ export const Sheet: React.FC<PropsWithChildren<SheetProps>> = (props) => {
                 layout={SequencedTransition}
                 entering={SlideInDown.springify().damping(19)}
             >
-                {(props.handleShown ?? true) && (
-                    <Handle color={props.handleColor} />
-                )}
                 {props.children}
             </Animated.View>
         </GestureDetector>
@@ -63,6 +67,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: '100%',
+        overflow: 'hidden',
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
         backgroundColor: '#FFFFFF',

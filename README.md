@@ -1,10 +1,16 @@
 # react-native-simple-sheet
 
-Simple react native package for bottom sheet.
+Simple & Customizable bottom sheet for React Native.
+This library is suitable for one-time action.
 
 ## Preview
-![simple-sheet](https://github.com/galaxykhh/react-native-simple-sheet/assets/79380337/96ae56a3-7af0-462c-85ea-fb00344bfb60)
+![simple sheet](https://github.com/galaxykhh/react-native-simple-sheet/assets/79380337/63289096-b0b5-4de5-a738-902f8c751f6e)
 
+
+## Features
+* Gesture
+* Style customizable
+* Functional show / hide also
 
 ## Installation
 
@@ -56,12 +62,13 @@ export default function App() {
 }
 ```
 ## Parameters
-| name            	| type    	| required 	| description               	| default   	|
-|-----------------	|---------	|----------	|---------------------------	|-----------	|
-| backgroundColor 	| string  	| false    	| Color of bottom sheet.    	| #FFFFFF   	|
-| scrimColor      	| string  	| false    	| Color of scrim (backdrop) 	| #11111188 	|
-| handleColor     	| string  	| false    	| Color of handle           	| #E5E7EB   	|
-| handleShown     	| boolean 	| false    	| Visibility of handle      	| true      	|
+| name            	            | type    	| required 	| description               	| default   	                |
+|---------------------------	|---------	|----------	|---------------------------	|---------------------------	|
+| sheetColor 	                | string  	| false    	| color of bottom sheet.    	| #FFFFFF   	                |
+| scrimColor      	            | string  	| false    	| color of scrim (backdrop) 	| #11111188 	                |
+| borderTopLeftRadius     	    | number  	| false    	| -           	                | 12   	                        |
+| borderTopRightRadius     	    | number 	| false    	| -      	                    | 12      	                    |
+| maxHeight     	            | number 	| false    	| max height of sheet      	        | screen height * 0.8      	    |
 
 
 ## Contributing

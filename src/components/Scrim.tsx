@@ -2,9 +2,12 @@ import React, { memo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Pressable } from 'react-native';
 
-export type ScrimProps = {
+export type ScrimStyleProps = {
+    scrimColor?: string;
+};
+
+export type ScrimProps = ScrimStyleProps & {
     onPress?: () => void;
-    backgroundColor?: string;
 };
 
 export const Scrim: React.FC<ScrimProps> = memo((props) => {
@@ -14,7 +17,7 @@ export const Scrim: React.FC<ScrimProps> = memo((props) => {
             style={{
                 ...styles.scrim,
                 backgroundColor:
-                    props.backgroundColor ?? styles.scrim.backgroundColor,
+                    props.scrimColor ?? styles.scrim.backgroundColor,
             }}
         />
     );
