@@ -68,7 +68,8 @@ export default function App() {
 | scrimColor      	            | string  	| false    	| color of scrim (backdrop) 	| #11111188 	                |
 | borderTopLeftRadius     	    | number  	| false    	| -           	                | 12   	                        |
 | borderTopRightRadius     	    | number 	| false    	| -      	                    | 12      	                    |
-| maxHeight     	            | number 	| false    	| max height of sheet      	        | screen height * 0.8      	    |
+| maxHeight     	            | number 	| false    	| max height of sheet      	    | screen height * 0.8      	    |
+| dismissible     	            | boolean 	| false    	| dismiss when scrim tapped     | true      	                |
 
 
 ## Contributing
