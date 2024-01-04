@@ -23,7 +23,10 @@ export type SheetHandler = {
     hide: () => void;
 };
 
-export type SimpleSheetProps = SheetStyleProps & ScrimStyleProps;
+export type SimpleSheetProps = SheetStyleProps &
+    ScrimStyleProps & {
+        dismissible?: boolean;
+    };
 
 const FAST_VELOCITY_POINT = 1000;
 
@@ -89,17 +92,19 @@ export const SimpleSheet = forwardRef<
         [sheetHeight]
     );
 
+    const dismissible = props.dismissible ?? true;
+
     return (
         <Modal
             visible={visible}
             animationType="fade"
             transparent
             statusBarTranslucent
-            onRequestClose={hide}
+            onRequestClose={dismissible ? hide : undefined}
         >
             <BottomSheet
                 scrimOptions={{
-                    onPress: hide,
+                    onPress: dismissible ? hide : undefined,
                     scrimColor: props.scrimColor,
                 }}
                 sheetOptions={{
