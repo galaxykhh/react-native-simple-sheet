@@ -11,9 +11,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
 
 export default function App() {
-    const { ref: ref1, show: show1, hide: hide1 } = useSimpleSheet();
-
-    const { ref: ref2, show: show2, hide: hide2 } = useSimpleSheet();
+    const [ref1, show1, hide1] = useSimpleSheet();
+    const [ref2, show2, hide2] = useSimpleSheet();
 
     const scheme = useColorScheme();
     const isDark = scheme === 'dark';

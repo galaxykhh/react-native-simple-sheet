@@ -1,13 +1,13 @@
-import { useCallback, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import type { SheetHandler } from '../components';
 
-type UseSimpleSheetType = {
-    ref: React.RefObject<SheetHandler>;
-    show: () => void;
-    hide: () => void;
-};
+type UseSimpleSheetHook = readonly [
+    React.RefObject<SheetHandler>,
+    () => void,
+    () => void
+];
 
-export const useSimpleSheet = (): UseSimpleSheetType => {
+export const useSimpleSheet = (): UseSimpleSheetHook => {
     const ref = useRef<SheetHandler>(null);
 
     const show = useCallback((): void => {
@@ -18,5 +18,5 @@ export const useSimpleSheet = (): UseSimpleSheetType => {
         ref.current?.hide();
     }, []);
 
-    return { ref, show, hide };
+    return [ref, show, hide] as const;
 };

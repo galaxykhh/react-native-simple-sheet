@@ -36,8 +36,8 @@
   },
   "keywords": [
     "react-native",
-    "react native bottom sheet",
-    "bottom sheet",
+    "react-native-bottom-sheet",
+    "bottom-sheet",
     "reanimated"
   ],
   "repository": {
