@@ -1,6 +1,6 @@
 # react-native-simple-sheet
 
-Simple & Customizable bottom sheet for React Native.
+Simple & Customizable Bottom Sheet for React Native.
 This library is suitable for one-time action.
 
 ## Preview
@@ -10,7 +10,7 @@ This library is suitable for one-time action.
 ## Features
 * Gesture
 * Style customizable
-* Functional show / hide also
+* Keyboard Avoiding Sheet
 
 ## Installation
 
@@ -35,9 +35,8 @@ import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
 
 export default function App() {
     const [ref, show, hide] = useSimpleSheet();
-
-    // *** You can also use useRef ***
-    // const ref = useRef<SheetHandler>(null);
+    // or name what you want.
+    // const [mySheetRef, showMySheet, hideMySheet] = useSimpleSheet();
 
     return (
         <GestureHandlerRootView style={styles.root}>
@@ -71,7 +70,7 @@ export default function App() {
 | maxHeight     	            | number 	| false    	| max height of sheet      	    | screen height * 0.8      	    |
 | dismissible     	            | boolean 	| false    	| dismiss when scrim tapped     | true      	                |
 | avoidKeyboard     	        | boolean 	| false    	| When the keyboard comes up, the sheet will be raised to the sheet will be raised to fit the height of the keyboard. | true      	                |
-| dismissible     	            | boolean 	| false    	| dismiss when scrim tapped     | true      	                |
+| keyboardAvoidingDuration     	| number 	| false    	| -                             | 400      	                    |
 
 
 ## Contributing

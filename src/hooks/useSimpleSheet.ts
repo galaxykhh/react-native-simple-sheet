@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import type { SheetHandler } from '../components';
 
-type UseSimpleSheetHook = readonly [
+type UseSimpleSheetHook = [
     React.RefObject<SheetHandler>,
     () => void,
     () => void

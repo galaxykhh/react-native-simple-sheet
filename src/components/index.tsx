@@ -55,13 +55,7 @@ export const SimpleSheet = forwardRef<
     const keyboardHeight = useSharedValue<number>(0);
     const sheetStyle = useAnimatedStyle(
         () => ({
-            transform: [{ translateY: offsetY.value }],
-        }),
-        []
-    );
-    const keyboardAvoidingStyle = useAnimatedStyle(
-        () => ({
-            transform: [{ translateY: keyboardHeight.value }],
+            transform: [{ translateY: offsetY.value + keyboardHeight.value }],
         }),
         []
     );
@@ -82,10 +76,14 @@ export const SimpleSheet = forwardRef<
     };
 
     const hide = useCallback(() => {
-        offsetY.value = withTiming(sheetHeight, {}, () => {
-            runOnJS(setVisible)(false);
-        });
-    }, [sheetHeight]);
+        offsetY.value = withTiming(
+            sheetHeight - keyboardHeight.value,
+            {},
+            () => {
+                runOnJS(setVisible)(false);
+            }
+        );
+    }, [sheetHeight, keyboardHeight.value]);
 
     const keyboardWillShow = useCallback(
         (e: KeyboardEvent) => {
@@ -163,7 +161,7 @@ export const SimpleSheet = forwardRef<
                 }}
                 sheetOptions={{
                     gesture: panGesture,
-                    animatedStyle: { ...sheetStyle, ...keyboardAvoidingStyle },
+                    animatedStyle: sheetStyle,
                     borderTopLeftRadius: props.borderTopLeftRadius,
                     borderTopRightRadius: props.borderTopRightRadius,
                     maxHeight: props.maxHeight,
