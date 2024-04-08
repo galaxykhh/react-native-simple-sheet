@@ -17,9 +17,23 @@ import {
 } from 'react-native-gesture-handler';
 
 export type SheetStyleProps = {
+    /** @default 12 */
     borderTopLeftRadius?: number;
+
+    /** @default 12 */
     borderTopRightRadius?: number;
+
+    /**
+     * The sheetColor attribute changes the background color of the bottom sheet.
+     *
+     * Although changing the background color of the View rendered as a child will result in the same change of background color,
+     * using sheetColor becomes useful when componentization is needed or when supporting dark mode, in conjunction with the scrimColor attribute.
+     *
+     * @default #FFFFFF
+     */
     sheetColor?: string;
+
+    /** @default Dimensions.get('window').height * 0.8 */
     maxHeight?: number;
 };
 

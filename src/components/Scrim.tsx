@@ -3,6 +3,10 @@ import { StyleSheet } from 'react-native';
 import { Pressable } from 'react-native';
 
 export type ScrimStyleProps = {
+    /**
+     * The color of scrim.
+     * @default #11111188
+     * */
     scrimColor?: string;
 };
 

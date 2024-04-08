@@ -63,6 +63,7 @@ export default function App() {
 ## Parameters
 | name            	            | type    	| required 	| description               	| default   	                |
 |---------------------------	|---------	|----------	|---------------------------	|---------------------------	|
+| ref 	                        | React.Ref | true    	| sheet controller    	        | -   	                        |
 | sheetColor 	                | string  	| false    	| color of bottom sheet.    	| #FFFFFF   	                |
 | scrimColor      	            | string  	| false    	| color of scrim (backdrop) 	| #11111188 	                |
 | borderTopLeftRadius     	    | number  	| false    	| -           	                | 12   	                        |
@@ -71,6 +72,8 @@ export default function App() {
 | dismissible     	            | boolean 	| false    	| dismiss when scrim tapped     | true      	                |
 | avoidKeyboard     	        | boolean 	| false    	| When the keyboard comes up, the sheet will be raised to the sheet will be raised to fit the height of the keyboard. | true      	                |
 | keyboardAvoidingDuration     	| number 	| false    	| -                             | 400      	                    |
+| onShow     	| function 	| false    	| will be called once the modal has been shown.                             | -      	                    |
+| onDismiss     	| function 	| false    	| will be called once the modal has been dismissed.                             | -      	                    |
 
 
 ## Contributing
