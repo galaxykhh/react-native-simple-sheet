@@ -70,6 +70,8 @@ export default function App() {
 | borderTopRightRadius     	    | number 	| false    	| -      	                    | 12      	                    |
 | maxHeight     	            | number 	| false    	| max height of sheet      	    | screen height * 0.8      	    |
 | dismissible     	            | boolean 	| false    	| dismiss when scrim tapped     | true      	                |
+| avoidKeyboard     	        | boolean 	| false    	| When the keyboard comes up, the sheet will be raised to the sheet will be raised to fit the height of the keyboard. | true      	                |
+| dismissible     	            | boolean 	| false    	| dismiss when scrim tapped     | true      	                |
 
 
 ## Contributing

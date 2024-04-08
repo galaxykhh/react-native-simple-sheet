@@ -74,6 +74,8 @@ export default function App() {
 
             <SimpleSheet
                 ref={ref3}
+                avoidKeyboard={true}
+                keyboardAvoidingDuration={3000}
                 sheetColor={backgroundColor}
                 scrimColor={scrimColor}
             >

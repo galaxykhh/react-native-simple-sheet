@@ -87,17 +87,24 @@ export const SimpleSheet = forwardRef<
         });
     }, [sheetHeight]);
 
-    const keyboardWillShow = useCallback((e: KeyboardEvent) => {
-        console.log(e.endCoordinates.height);
-        keyboardHeight.value = withTiming(-e.endCoordinates.height, {
-            duration:
-                props.keyboardAvoidingDuration ?? KEYBOARD_AVOIDING_DURATION,
-        });
-    }, []);
+    const keyboardWillShow = useCallback(
+        (e: KeyboardEvent) => {
+            if (props.avoidKeyboard) {
+                keyboardHeight.value = withTiming(-e.endCoordinates.height, {
+                    duration:
+                        props.keyboardAvoidingDuration ??
+                        KEYBOARD_AVOIDING_DURATION,
+                });
+            }
+        },
+        [props.avoidKeyboard]
+    );
 
     const keyboardWillHide = useCallback(() => {
-        keyboardHeight.value = withTiming(0);
-    }, []);
+        if (props.avoidKeyboard) {
+            keyboardHeight.value = withTiming(0);
+        }
+    }, [props.avoidKeyboard]);
 
     const panGesture = Gesture.Pan()
         .onChange((event) => {
