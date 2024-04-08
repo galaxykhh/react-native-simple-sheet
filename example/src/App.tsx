@@ -4,6 +4,7 @@ import {
     FlatList,
     StyleSheet,
     Text,
+    TextInput,
     View,
     useColorScheme,
 } from 'react-native';
@@ -13,6 +14,7 @@ import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
 export default function App() {
     const [ref1, show1, hide1] = useSimpleSheet();
     const [ref2, show2, hide2] = useSimpleSheet();
+    const [ref3, show3, hide3] = useSimpleSheet();
 
     const scheme = useColorScheme();
     const isDark = scheme === 'dark';
@@ -29,6 +31,7 @@ export default function App() {
                 </Text>
                 <Button title="Open" onPress={show1} />
                 <Button title="Open List" onPress={show2} />
+                <Button title="Keyboard Avoiding" onPress={show3} />
             </View>
 
             <SimpleSheet
@@ -68,6 +71,17 @@ export default function App() {
                     <Button title="Close Sheet" onPress={hide2} />
                 </View>
             </SimpleSheet>
+
+            <SimpleSheet
+                ref={ref3}
+                sheetColor={backgroundColor}
+                scrimColor={scrimColor}
+            >
+                <View style={styles.container}>
+                    <TextInput style={styles.input} placeholder="Edit here" />
+                    <Button title="Close Sheet" onPress={hide3} />
+                </View>
+            </SimpleSheet>
         </GestureHandlerRootView>
     );
 }
@@ -78,6 +92,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        padding: 20,
         alignItems: 'center',
         justifyContent: 'center',
         gap: 20,
@@ -108,5 +123,8 @@ const styles = StyleSheet.create({
     },
     separator: {
         height: 4,
+    },
+    input: {
+        fontSize: 24,
     },
 });
