@@ -34,7 +34,7 @@ npx expo install react-native-reanimated react-native-gesture-handler react-nati
 import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
 
 export default function App() {
-    const { ref, show, hide } = useSimpleSheet();
+    const [ref, show, hide] = useSimpleSheet();
 
     // *** You can also use useRef ***
     // const ref = useRef<SheetHandler>(null);
