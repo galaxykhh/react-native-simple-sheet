@@ -4,12 +4,12 @@ import React, {
     useState,
     forwardRef,
     useImperativeHandle,
-    useEffect,
 } from 'react';
-import { Keyboard, Modal, NativeSyntheticEvent, Platform } from 'react-native';
+import { Modal, NativeSyntheticEvent, Platform } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import {
     runOnJS,
+    useAnimatedKeyboard,
     useAnimatedStyle,
     useSharedValue,
     withSpring,
@@ -18,7 +18,6 @@ import {
 import { BottomSheet } from './BottomSheet';
 import { SheetStyleProps } from './Sheet';
 import { ScrimStyleProps } from './Scrim';
-import { KeyboardEvent } from 'react-native';
 
 export type SheetHandler = {
     show: () => void;
@@ -34,16 +33,16 @@ export type SimpleSheetProps = SheetStyleProps &
         dismissible?: boolean;
 
         /**
-         * The `avoidKeyboard` attribute determines whether the bottom sheet will also move up when the keyboard is shown.
+         * The `gestureEnable` props determines whether the sheet will be animate when swipe gesture.
          * @default true
          */
-        avoidKeyboard?: boolean;
+        gestureEnable?: boolean;
 
         /**
-         * The `keyboardAvoidingDuration` props determines how quickly the bottom sheet will rise when the `avoidKeyboard` attribute is set to true.
-         * @default 400
+         * The `avoidKeyboard` props determines whether the bottom sheet will also move up when the keyboard is shown.
+         * @default false
          */
-        keyboardAvoidingDuration?: number;
+        avoidKeyboard?: boolean;
 
         /**
          * The `onShow` prop allows passing a function that will be called once the modal has been shown.
@@ -57,7 +56,6 @@ export type SimpleSheetProps = SheetStyleProps &
     };
 
 const FAST_VELOCITY_POINT = 1000;
-const KEYBOARD_AVOIDING_DURATION = 400;
 
 export const SimpleSheet = forwardRef<
     SheetHandler,
@@ -66,8 +64,8 @@ export const SimpleSheet = forwardRef<
     (
         {
             dismissible = true,
-            avoidKeyboard = true,
-            keyboardAvoidingDuration = KEYBOARD_AVOIDING_DURATION,
+            gestureEnable = true,
+            avoidKeyboard = false,
             onShow,
             onDismiss,
             ...props
@@ -77,14 +75,18 @@ export const SimpleSheet = forwardRef<
         const [visible, setVisible] = useState<boolean>(false);
         const [sheetHeight, setSheetHeight] = useState<number>(0);
         const offsetY = useSharedValue<number>(0);
-        const keyboardHeight = useSharedValue<number>(0);
+        const keyboard = useAnimatedKeyboard();
         const sheetStyle = useAnimatedStyle(
             () => ({
                 transform: [
-                    { translateY: offsetY.value + keyboardHeight.value },
+                    {
+                        translateY: avoidKeyboard
+                            ? offsetY.value - keyboard.height.value
+                            : offsetY.value,
+                    },
                 ],
             }),
-            []
+            [avoidKeyboard]
         );
 
         const handleVisible = useCallback((value: boolean): void => {
@@ -104,45 +106,29 @@ export const SimpleSheet = forwardRef<
 
         const hide = useCallback(() => {
             offsetY.value = withTiming(
-                sheetHeight - keyboardHeight.value,
+                sheetHeight + keyboard.height.value,
                 {},
                 () => {
                     runOnJS(setVisible)(false);
                 }
             );
-        }, [sheetHeight, keyboardHeight.value]);
-
-        const keyboardWillShow = useCallback(
-            (e: KeyboardEvent) => {
-                if (avoidKeyboard) {
-                    keyboardHeight.value = withTiming(
-                        -e.endCoordinates.height,
-                        {
-                            duration: keyboardAvoidingDuration,
-                        }
-                    );
-                }
-            },
-            [avoidKeyboard]
-        );
-
-        const keyboardWillHide = useCallback(() => {
-            if (avoidKeyboard) {
-                keyboardHeight.value = withTiming(0);
-            }
-        }, [avoidKeyboard]);
+        }, [sheetHeight, avoidKeyboard]);
 
         const panGesture = Gesture.Pan()
             .onChange((event) => {
-                const delta = event.changeY + offsetY.value;
-                offsetY.value = delta > 0 ? delta : 0;
+                if (gestureEnable) {
+                    const delta = event.changeY + offsetY.value;
+                    offsetY.value = delta > 0 ? delta : 0;
+                }
             })
             .onEnd((event) => {
-                const isFast = event.velocityY >= FAST_VELOCITY_POINT;
-                const isOver = offsetY.value > sheetHeight * 0.5;
-                const shouldClose = isFast || isOver;
+                if (gestureEnable) {
+                    const isFast = event.velocityY >= FAST_VELOCITY_POINT;
+                    const isOver = offsetY.value > sheetHeight * 0.5;
+                    const shouldClose = isFast || isOver;
 
-                runOnJS(shouldClose ? hide : restore)();
+                    runOnJS(shouldClose ? hide : restore)();
+                }
             });
 
         useImperativeHandle(
@@ -156,28 +142,15 @@ export const SimpleSheet = forwardRef<
             [sheetHeight]
         );
 
-        useEffect(() => {
-            const keyboardWillShowListener = Keyboard.addListener(
-                'keyboardWillShow',
-                keyboardWillShow
-            );
-            const keyboardWillHideListener = Keyboard.addListener(
-                'keyboardWillHide',
-                keyboardWillHide
-            );
-
-            return () => {
-                keyboardWillShowListener.remove();
-                keyboardWillHideListener.remove();
-            };
-        }, []);
-
         return (
             <Modal
                 visible={visible}
                 animationType="fade"
                 transparent
-                statusBarTranslucent
+                statusBarTranslucent={Platform.select({
+                    ios: true,
+                    android: !avoidKeyboard,
+                })}
                 onRequestClose={dismissible ? hide : undefined}
                 onShow={onShow}
                 onDismiss={onDismiss}

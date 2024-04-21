@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {
     Button,
-    FlatList,
     StyleSheet,
     Text,
     TextInput,
     View,
     useColorScheme,
 } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
 
 export default function App() {
@@ -54,6 +54,8 @@ export default function App() {
                 ref={ref2}
                 sheetColor={backgroundColor}
                 scrimColor={scrimColor}
+                gestureEnable={false}
+                avoidKeyboard={false}
             >
                 <View style={styles.scrollable}>
                     <Text style={styles.title}>Numbers</Text>
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
         gap: 24,
     },
     scrollable: {
-        height: '100%',
+        height: 500,
         padding: 12,
         paddingBottom: 32,
         gap: 12,

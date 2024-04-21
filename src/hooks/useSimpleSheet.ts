@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import type { SheetHandler } from '../components';
+import type { SheetHandler } from '../components/SimpleSheet';
 
 type UseSimpleSheetHook = [
     React.RefObject<SheetHandler>,

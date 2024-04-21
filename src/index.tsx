@@ -2,7 +2,7 @@ import {
     SimpleSheet,
     type SimpleSheetProps,
     type SheetHandler,
-} from './components/index';
+} from './components';
 import { type SheetProps } from './components/Sheet';
 import { type ScrimProps } from './components/Scrim';
 import { useSimpleSheet } from './hooks/useSimpleSheet';

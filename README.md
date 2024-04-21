@@ -28,7 +28,7 @@ npx expo install react-native-reanimated react-native-gesture-handler react-nati
 
 ## Usage
 
-* make sure to wrap with <code>GestureHandlerRootView</code>
+* Make sure to wrap with <code>GestureHandlerRootView</code>
 * Make sure pass the <code>**ref**</code> to controll
 ```tsx
 import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
@@ -63,18 +63,23 @@ export default function App() {
 ## Parameters
 | name            	            | type    	| required 	| description               	| default   	                |
 |---------------------------	|---------	|----------	|---------------------------	|---------------------------	|
-| ref 	                        | React.Ref | true    	| sheet controller    	        | -   	                        |
-| sheetColor 	                | string  	| false    	| color of bottom sheet.    	| #FFFFFF   	                |
-| scrimColor      	            | string  	| false    	| color of scrim (backdrop) 	| #11111188 	                |
-| borderTopLeftRadius     	    | number  	| false    	| -           	                | 12   	                        |
-| borderTopRightRadius     	    | number 	| false    	| -      	                    | 12      	                    |
-| maxHeight     	            | number 	| false    	| max height of sheet      	    | screen height * 0.8      	    |
-| dismissible     	            | boolean 	| false    	| dismiss when scrim tapped     | true      	                |
-| avoidKeyboard     	        | boolean 	| false    	| When the keyboard comes up, the sheet will be raised to the sheet will be raised to fit the height of the keyboard. | true      	                |
-| keyboardAvoidingDuration     	| number 	| false    	| -                             | 400      	                    |
+| ref 	                        | React.Ref | O    	| sheet controller    	        | -   	                        |
+| sheetColor 	                | string  	| X    	| color of bottom sheet.    	| #FFFFFF   	                |
+| scrimColor      	            | string  	| X    	| color of scrim (backdrop) 	| #11111188 	                |
+| borderTopLeftRadius     	    | number  	| X    	| -           	                | 12   	                        |
+| borderTopRightRadius     	    | number 	| X    	| -      	                    | 12      	                    |
+| maxHeight     	            | number 	| X    	| max height of sheet      	    | screen height * 0.8      	    |
+| dismissible     	            | boolean 	| X    	| dismiss when scrim tapped     | true      	                |
+| avoidKeyboard     	        | boolean 	| X    	| determines whether the bottom sheet will also move up when the keyboard is shown. | true      	                |
+| gestureEnable     	        | boolean 	| X    	| determines whether the sheet will be animate when swipe gesture.                             | true      	                    |
 | onShow     	| function 	| false    	| will be called once the modal has been shown.                             | -      	                    |
 | onDismiss     	| function 	| false    	| will be called once the modal has been dismissed.                             | -      	                    |
 
+
+## Known Issue
+The Keyboard Avoiding feature does not work as smoothly as expected on Android.
+* This issue is related to an issue with reanimated. For more details, please refer this [PR](https://github.com/software-mansion/react-native-reanimated/issues/5754).
+* When setting the avoidKeyboard property to true on Android, the top status bar will visible.
 
 ## Contributing
 
