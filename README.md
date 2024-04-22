@@ -34,29 +34,31 @@ npx expo install react-native-reanimated react-native-gesture-handler react-nati
 import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
 
 export default function App() {
+    return (
+        <GestureHandlerRootView style={styles.root}>
+            <MyScreen />
+        </GestureHandlerRootView>
+    );
+}
+
+...
+
+export default function MyScreen() {
     const [ref, show, hide] = useSimpleSheet();
     // or name what you want.
     // const [mySheetRef, showMySheet, hideMySheet] = useSimpleSheet();
 
     return (
-        <GestureHandlerRootView style={styles.root}>
-            <Text onPress={show} style={styles.title}>React Native Simple Sheet</Text>
-            <Button
-                title='Open'
-                onPress={show}
-            />
-
-            <SimpleSheet ref={ref}>
-                <View style={styles.sheet}>
-                    <Text style={styles.title}>I am Simple Sheet</Text>
-                    <Text style={styles.message}>Set components you want.</Text>
-                    <Button
-                        title='Close sheet'
-                        onPress={hide}
-                    />
-                </View>
-            </SimpleSheet>
-        </GestureHandlerRootView>
+        <SimpleSheet ref={ref}>
+            <View style={styles.sheet}>
+                <Text style={styles.title}>I am Simple Sheet</Text>
+                <Text style={styles.message}>Set components you want.</Text>
+                <Button
+                    title='Close sheet'
+                    onPress={hide}
+                />
+            </View>
+        </SimpleSheet>
     );
 }
 ```
@@ -70,10 +72,10 @@ export default function App() {
 | borderTopRightRadius     	    | number 	| X    	| -      	                    | 12      	                    |
 | maxHeight     	            | number 	| X    	| max height of sheet      	    | screen height * 0.8      	    |
 | dismissible     	            | boolean 	| X    	| dismiss when scrim tapped     | true      	                |
-| avoidKeyboard     	        | boolean 	| X    	| determines whether the bottom sheet will also move up when the keyboard is shown. | true      	                |
+| avoidKeyboard     	        | boolean 	| X    	| determines whether the bottom sheet will also move up when the keyboard is shown. | false      	                |
 | gestureEnable     	        | boolean 	| X    	| determines whether the sheet will be animate when swipe gesture.                             | true      	                    |
-| onShow     	| function 	| false    	| will be called once the modal has been shown.                             | -      	                    |
-| onDismiss     	| function 	| false    	| will be called once the modal has been dismissed.                             | -      	                    |
+| onShow     	| function 	| X    	| will be called once the modal has been shown.                             | -      	                    |
+| onDismiss     	| function 	| X    	| will be called once the modal has been dismissed.                             | -      	                    |
 
 
 ## Known Issue
