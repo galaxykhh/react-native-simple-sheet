@@ -48,6 +48,8 @@ export default function App() {
 
 ## Usage
 
+#### Basic
+
 ```jsx
 export default function MyScreen() {
   const sheet = useSimpleSheet();
@@ -57,9 +59,49 @@ export default function MyScreen() {
       title="Open Sheet"
       onPress={() =>
         sheet.open((props) => (
-          <SimpleSheet {...props}>// My Content</SimpleSheet>
+          <SimpleSheet {...props}>
+            <View>...</View>
+          </SimpleSheet>
         ))
       }
+    />
+  );
+}
+```
+
+#### Async action
+
+```jsx
+
+type Result = 'CONFIRM' | 'CANCEL' | 'DISMISS';
+
+export default function MyScreen() {
+  const sheet = useSimpleSheet();
+
+  const openSelectSheet = (): Promise<Result> => {
+    return await Promise<Result>(resolve => {
+      sheet.open(props => (
+        <MySheet
+          {...props}
+          onDismiss={() => props.close(() => resolve('DISMISS'))}
+          onConfirm={() => props.close(() => resolve('CONFIRM'))}
+          onCancel={() => {
+            // Same with props.close(() => resolve('CANCEL'))
+            props.close();
+            resolve('CANCEL');
+          }}
+        />
+      ));
+    });
+  }
+
+  return (
+    <Button
+      title="Open Sheet"
+      onPress={async () => {
+        const result = await openSelectSheet();
+        console.log(result); // CONFIRM | CANCEL | DISMISS
+      }}
     />
   );
 }

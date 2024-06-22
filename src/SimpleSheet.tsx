@@ -43,12 +43,6 @@ export type SimpleSheetBasicProps = {
      * The `onDismiss` prop is called when the sheet is dismissed via a gesture or a scrim touch.
      */
     onDismiss?: () => void;
-
-    /**
-     * The color of scrim.
-     * @default #11111188
-     */
-    scrimColor?: string;
 };
 
 export type SimpleSheetProps = SimpleSheetBasicProps &
@@ -70,6 +64,12 @@ export type SimpleSheetProps = SimpleSheetBasicProps &
          * @default true
          */
         avoidKeyboard?: boolean;
+
+        /**
+         * The color of scrim.
+         * @default #11111188
+         */
+        scrimColor?: string;
     };
 
 const DEFAULT_SCRIM_COLOR = '#11111188';
