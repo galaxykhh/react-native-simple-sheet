@@ -16,67 +16,70 @@ import {
 } from 'react-native-reanimated';
 import { SheetStyleProps } from './Sheet';
 import { BottomSheet } from './BottomSheet';
+import { ScrimStyleProps } from '../lib/typescript/src/components/Scrim';
 
 export type SheetHandler = {
     show: () => void;
     hide: () => void;
 };
 
-export type SimpleSheetProps = SheetStyleProps & {
+export type SimpleSheetBasicProps = {
+    /**
+     * The `visible` prop determines whether the bottom sheet is visible. The animation operates based on the visible value.
+     *
+     */
     visible: boolean;
 
     /**
-     * The `dismissible` props determines whether the sheet will be dismissed when touching outside of sheet.
-     * @default true
-     */
-    dismissible?: boolean;
-
-    /**
-     * The `gestureEnable` props determines whether the sheet will be animate when swipe gesture.
-     * @default true
-     */
-    gestureEnable?: boolean;
-
-    /**
-     * The `avoidKeyboard` props determines whether the bottom sheet will also move up when the keyboard is shown.
-     * @default true
-     */
-    avoidKeyboard?: boolean;
-
-    /**
-     * The color of scrim.
-     * @default #11111188
-     * */
-    scrimColor: string;
-
-    /**
-     * The `close` prop allows passing a function that will be called when touching outside of sheet.
+     * The `close` prop triggers the animation to close the bottom sheet.
      */
     close: () => void;
 
     /**
-     * The `exit` prop allows passing a function that will be called when touching outside of sheet.
+     * The `unmount` prop unmounts the bottom sheet from the root. It is typically called after the close animation finished.
      */
-    exit: () => void;
+    unmount: () => void;
 
     /**
-     * The `onDismiss` prop a function that will be called the modal has been dismissed.
+     * The `onDismiss` prop is called when the sheet is dismissed via a gesture or a scrim touch.
      */
-    onDismiss: () => void;
+    onDismiss?: () => void;
 };
+
+export type SimpleSheetProps = SimpleSheetBasicProps &
+    ScrimStyleProps &
+    SheetStyleProps & {
+        /**
+         * The `dismissible` props determines whether the sheet will be dismissed when touching outside of sheet.
+         * @default true
+         */
+        dismissible?: boolean;
+
+        /**
+         * The `gestureEnable` props determines whether the sheet will be animate when swipe gesture.
+         * @default true
+         */
+        gestureEnable?: boolean;
+
+        /**
+         * The `avoidKeyboard` props determines whether the bottom sheet will also move up when the keyboard is shown.
+         * @default true
+         */
+        avoidKeyboard?: boolean;
+    };
 
 const DEFAULT_SCRIM_COLOR = '#11111188';
 const FAST_VELOCITY_POINT = 1000;
 
 export const SimpleSheet = ({
     visible,
+    close,
+    unmount,
+    onDismiss,
     dismissible = true,
     gestureEnable = true,
     avoidKeyboard = true,
     scrimColor = DEFAULT_SCRIM_COLOR,
-    close,
-    exit,
-    onDismiss,
     ...props
 }: PropsWithChildren<SimpleSheetProps>) => {
     const [sheetHeight, setSheetHeight] = useState<number>(0);
@@ -99,7 +102,7 @@ export const SimpleSheet = ({
             backgroundColor: interpolateColor(
                 offsetY.value,
                 [0, sheetHeight],
-                [scrimColor, '#00000000']
+                [scrimColor, '#11111100']
             ),
         }),
         [scrimColor, sheetHeight]
@@ -118,8 +121,8 @@ export const SimpleSheet = ({
             sheetHeight + keyboard.height.value,
             {},
             () => {
-                runOnJS(onDismiss)();
-                runOnJS(exit)();
+                onDismiss && runOnJS(onDismiss)();
+                runOnJS(unmount)();
             }
         );
     }, [sheetHeight, avoidKeyboard]);
@@ -142,7 +145,6 @@ export const SimpleSheet = ({
         });
 
     useEffect(() => {
-        console.log('VISIBLE', visible);
         visible ? show() : hide();
     }, [visible]);
 

@@ -1,6 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Animated, { AnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+    AnimatedStyle,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 
 export type ScrimProps = {
     onPress?: () => void;
@@ -10,10 +15,22 @@ export type ScrimProps = {
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export const Scrim: React.FC<ScrimProps> = memo((props) => {
+    const mounted = useSharedValue(false);
+    const opacity = useAnimatedStyle(
+        () => ({
+            opacity: withTiming(mounted.value ? 1 : 0),
+        }),
+        []
+    );
+
+    useEffect(() => {
+        mounted.value = true;
+    }, []);
+
     return (
         <AnimatedPressable
             onPress={props.onPress}
-            style={[StyleSheet.absoluteFill, props.animatedStyle]}
+            style={[StyleSheet.absoluteFill, opacity, props.animatedStyle]}
         />
     );
 });

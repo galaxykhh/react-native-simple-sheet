@@ -11,12 +11,12 @@ import {
 export type SheetCreator = (props: {
     visible: boolean;
     close: (additionalAction?: () => void) => void;
-    exit: () => void;
+    unmount: () => void;
 }) => JSX.Element;
 
 type SimpleSheetHandlerProps = {
     sheet: SheetCreator;
-    onExit: () => void;
+    onUnmount: () => void;
 };
 
 export type SimpleSheetHandlerRef = {
@@ -25,7 +25,7 @@ export type SimpleSheetHandlerRef = {
 
 export const SimpleSheetHandler = forwardRef(
     (
-        { sheet: Sheet, onExit }: SimpleSheetHandlerProps,
+        { sheet: Sheet, onUnmount }: SimpleSheetHandlerProps,
         ref: Ref<SimpleSheetHandlerRef>
     ) => {
         const [visible, setVisible] = useState(true);
@@ -50,7 +50,7 @@ export const SimpleSheetHandler = forwardRef(
                     typeof additionalAction === 'function' &&
                         additionalAction();
                 }}
-                exit={onExit}
+                unmount={onUnmount}
             />
         );
     }

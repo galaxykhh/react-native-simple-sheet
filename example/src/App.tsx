@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Button, StyleSheet, Text, View, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SimpleSheetProvider, useSimpleSheet, SimpleSheet } from '../../src';
+import { SimpleSheetProvider, useSimpleSheet } from '../../src';
+import ConfirmCancelSheet from './ConfirmCancelSheet';
+import AvoidKeyboardSheet from './AvoidKeyboardSheet';
 
 export default function App() {
     return (
@@ -15,11 +17,11 @@ export default function App() {
 
 function MyView() {
     const sheet = useSimpleSheet();
+    const [result, setResult] = React.useState<string>('none');
     const scheme = useColorScheme();
     const isDark = scheme === 'dark';
 
     const backgroundColor = isDark ? '#111111' : '#FFFFFF';
-    const scrimColor = isDark ? '#FFFFFF33' : '#11111188';
     const textColor = isDark ? '#FFFFFF' : '#000000';
 
     return (
@@ -27,51 +29,42 @@ function MyView() {
             <Text style={{ ...styles.title, color: textColor }}>
                 React Native Simple Sheet
             </Text>
+            <Text>current result: {result}</Text>
             <Button
-                title="Open A"
+                title="Open Simple Sheet"
                 onPress={async () => {
-                    const result = await new Promise((resolve) => {
-                        sheet.open(({ visible, close, exit }) => {
-                            const confirm = () => {
-                                close(() => resolve('confirm'));
-                            };
-                            const cancel = () => {
-                                close(() => resolve('cancel'));
-                            };
-
-                            return (
-                                <SimpleSheet
-                                    visible={visible}
-                                    exit={exit}
-                                    close={cancel}
-                                    onDismiss={cancel}
-                                    scrimColor={scrimColor}
-                                >
-                                    <View
-                                        style={{
-                                            height: 500,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <Text style={styles.title}>
-                                            Hello modal
-                                        </Text>
-                                        <Button
-                                            title="CONFIRM"
-                                            onPress={confirm}
-                                        />
-                                        <Button
-                                            title="CANCEL"
-                                            onPress={cancel}
-                                        />
-                                    </View>
-                                </SimpleSheet>
-                            );
-                        });
+                    const result = await new Promise<string>((resolve) => {
+                        sheet.open((props) => (
+                            <ConfirmCancelSheet
+                                {...props}
+                                onCancel={() =>
+                                    props.close(() => resolve('cancel'))
+                                }
+                                onConfirm={() =>
+                                    props.close(() => resolve('confirm'))
+                                }
+                                onDismiss={() => resolve('dismissed')}
+                            />
+                        ));
                     });
-                    console.log(result);
+
+                    console.log('BottomSheet closed!');
+
+                    setResult(result);
                 }}
+            />
+
+            <Button
+                title="Open AvoidKeyboard Sheet"
+                onPress={() =>
+                    sheet.open(({ visible, close, unmount }) => (
+                        <AvoidKeyboardSheet
+                            visible={visible}
+                            close={close}
+                            unmount={unmount}
+                        />
+                    ))
+                }
             />
         </View>
     );
@@ -88,35 +81,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         gap: 20,
     },
-    sheet: {
-        alignItems: 'center',
-        padding: 24,
-        marginBottom: 48,
-        gap: 24,
-    },
-    scrollable: {
-        height: 500,
-        padding: 12,
-        paddingBottom: 32,
-        gap: 12,
-    },
     title: {
         fontSize: 22,
         fontWeight: 'bold',
-        marginBottom: 24,
-    },
-    message: {
-        fontSize: 16,
-    },
-    item: {
-        padding: 20,
-        backgroundColor: '#ECECEC',
-        borderRadius: 12,
-    },
-    separator: {
-        height: 4,
-    },
-    input: {
-        fontSize: 24,
+        marginBottom: 12,
     },
 });

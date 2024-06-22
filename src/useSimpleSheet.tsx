@@ -6,29 +6,23 @@ import {
     type SimpleSheetHandlerRef,
 } from './SimpleSheetHandler';
 
-let elementId = 1;
+let _id = 1;
 
-interface Options {
-    exitOnClose?: boolean;
-}
-
-export const useSimpleSheet = ({ exitOnClose = true }: Options = {}) => {
+export const useSimpleSheet = () => {
     const context = useContext(SimpleSheetContext);
 
     if (!context) {
         throw new Error('App must be wrapped in a <SimpleSheetProvider />');
     }
 
-    const [id] = useState(() => String(elementId++));
+    const [id] = useState(() => String(_id++));
     const simpleSheetRef = useRef<SimpleSheetHandlerRef>(null);
 
     useEffect(() => {
         return () => {
-            if (exitOnClose) {
-                context.close(id);
-            }
+            context.close(id);
         };
-    }, [exitOnClose, id, context.close]);
+    }, [id, context.close]);
 
     return useMemo(
         () => ({
@@ -39,7 +33,7 @@ export const useSimpleSheet = ({ exitOnClose = true }: Options = {}) => {
                         key={Date.now()}
                         ref={simpleSheetRef}
                         sheet={sheet}
-                        onExit={() => context.close(id)}
+                        onUnmount={() => context.close(id)}
                     />
                 );
             },
