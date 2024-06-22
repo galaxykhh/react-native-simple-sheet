@@ -16,7 +16,6 @@ import {
 } from 'react-native-reanimated';
 import { SheetStyleProps } from './Sheet';
 import { BottomSheet } from './BottomSheet';
-import { ScrimStyleProps } from '../lib/typescript/src/components/Scrim';
 
 export type SheetHandler = {
     show: () => void;
@@ -44,10 +43,15 @@ export type SimpleSheetBasicProps = {
      * The `onDismiss` prop is called when the sheet is dismissed via a gesture or a scrim touch.
      */
     onDismiss?: () => void;
+
+    /**
+     * The color of scrim.
+     * @default #11111188
+     */
+    scrimColor?: string;
 };
 
 export type SimpleSheetProps = SimpleSheetBasicProps &
-    ScrimStyleProps &
     SheetStyleProps & {
         /**
          * The `dismissible` props determines whether the sheet will be dismissed when touching outside of sheet.
