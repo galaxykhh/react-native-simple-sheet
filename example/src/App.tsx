@@ -1,21 +1,20 @@
 import * as React from 'react';
-import {
-    Button,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-    useColorScheme,
-} from 'react-native';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-
-import { SimpleSheet, useSimpleSheet } from 'react-native-simple-sheet';
+import { Button, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SimpleSheetProvider, useSimpleSheet, SimpleSheet } from '../../src';
 
 export default function App() {
-    const [ref1, show1, hide1] = useSimpleSheet();
-    const [ref2, show2, hide2] = useSimpleSheet();
-    const [ref3, show3, hide3] = useSimpleSheet();
+    return (
+        <GestureHandlerRootView style={styles.root}>
+            <SimpleSheetProvider>
+                <MyView />
+            </SimpleSheetProvider>
+        </GestureHandlerRootView>
+    );
+}
 
+function MyView() {
+    const sheet = useSimpleSheet();
     const scheme = useColorScheme();
     const isDark = scheme === 'dark';
 
@@ -24,68 +23,57 @@ export default function App() {
     const textColor = isDark ? '#FFFFFF' : '#000000';
 
     return (
-        <GestureHandlerRootView style={styles.root}>
-            <View style={{ ...styles.container, backgroundColor }}>
-                <Text style={{ ...styles.title, color: textColor }}>
-                    React Native Simple Sheet
-                </Text>
-                <Button title="Open" onPress={show1} />
-                <Button title="Open List" onPress={show2} />
-                <Button title="Keyboard Avoiding" onPress={show3} />
-            </View>
+        <View style={{ ...styles.container, backgroundColor }}>
+            <Text style={{ ...styles.title, color: textColor }}>
+                React Native Simple Sheet
+            </Text>
+            <Button
+                title="Open A"
+                onPress={async () => {
+                    const result = await new Promise((resolve) => {
+                        sheet.open(({ visible, close, exit }) => {
+                            const confirm = () => {
+                                close(() => resolve('confirm'));
+                            };
+                            const cancel = () => {
+                                close(() => resolve('cancel'));
+                            };
 
-            <SimpleSheet
-                ref={ref1}
-                sheetColor={backgroundColor}
-                scrimColor={scrimColor}
-            >
-                <View style={styles.sheet}>
-                    <Text style={{ ...styles.title, color: textColor }}>
-                        Simple Sheet
-                    </Text>
-                    <Text style={{ ...styles.message, color: textColor }}>
-                        Set components you want.
-                    </Text>
-                    <Button title="Close sheet" onPress={hide1} />
-                </View>
-            </SimpleSheet>
-
-            <SimpleSheet
-                ref={ref2}
-                sheetColor={backgroundColor}
-                scrimColor={scrimColor}
-                gestureEnable={false}
-                avoidKeyboard={false}
-            >
-                <View style={styles.scrollable}>
-                    <Text style={styles.title}>Numbers</Text>
-                    <FlatList
-                        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]}
-                        renderItem={({ item }) => (
-                            <View style={styles.item}>
-                                <Text>{item}</Text>
-                            </View>
-                        )}
-                        ItemSeparatorComponent={() => (
-                            <View style={styles.separator} />
-                        )}
-                    />
-                    <Button title="Close Sheet" onPress={hide2} />
-                </View>
-            </SimpleSheet>
-
-            <SimpleSheet
-                ref={ref3}
-                avoidKeyboard
-                sheetColor={backgroundColor}
-                scrimColor={scrimColor}
-            >
-                <View style={styles.container}>
-                    <TextInput style={styles.input} placeholder="Edit here" />
-                    <Button title="Close Sheet" onPress={hide3} />
-                </View>
-            </SimpleSheet>
-        </GestureHandlerRootView>
+                            return (
+                                <SimpleSheet
+                                    visible={visible}
+                                    exit={exit}
+                                    close={cancel}
+                                    onDismiss={cancel}
+                                    scrimColor={scrimColor}
+                                >
+                                    <View
+                                        style={{
+                                            height: 500,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <Text style={styles.title}>
+                                            Hello modal
+                                        </Text>
+                                        <Button
+                                            title="CONFIRM"
+                                            onPress={confirm}
+                                        />
+                                        <Button
+                                            title="CANCEL"
+                                            onPress={cancel}
+                                        />
+                                    </View>
+                                </SimpleSheet>
+                            );
+                        });
+                    });
+                    console.log(result);
+                }}
+            />
+        </View>
     );
 }
 
@@ -115,6 +103,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 22,
         fontWeight: 'bold',
+        marginBottom: 24,
     },
     message: {
         fontSize: 16,
