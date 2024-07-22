@@ -1,7 +1,6 @@
 import {
     SimpleSheet,
     type SimpleSheetProps,
-    type SheetHandler,
     type SimpleSheetBasicProps,
 } from './SimpleSheet';
 import { type SheetProps } from './Sheet';
@@ -11,10 +10,4 @@ import { useSimpleSheet } from './useSimpleSheet';
 
 export { SimpleSheet, SimpleSheetProvider, useSimpleSheet };
 
-export type {
-    SimpleSheetBasicProps,
-    SimpleSheetProps,
-    SheetHandler,
-    SheetProps,
-    ScrimProps,
-};
+export type { SimpleSheetBasicProps, SimpleSheetProps, SheetProps, ScrimProps };

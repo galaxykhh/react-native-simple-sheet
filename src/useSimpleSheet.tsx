@@ -17,23 +17,24 @@ export const useSimpleSheet = () => {
 
     const [id] = useState(() => String(_id++));
     const simpleSheetRef = useRef<SimpleSheetHandlerRef>(null);
+    const { open, close } = context;
 
     useEffect(() => {
         return () => {
-            context.close(id);
+            close(id);
         };
-    }, [id, context.close]);
+    }, [id, close]);
 
     return useMemo(
         () => ({
             open: async (sheet: SheetCreator) => {
-                context.open(
+                open(
                     id,
                     <SimpleSheetHandler
                         key={Date.now()}
                         ref={simpleSheetRef}
                         sheet={sheet}
-                        onUnmount={() => context.close(id)}
+                        onUnmount={() => close(id)}
                     />
                 );
             },
@@ -41,9 +42,9 @@ export const useSimpleSheet = () => {
                 simpleSheetRef.current?.close(additionalAction);
             },
             exit: () => {
-                context.close(id);
+                close(id);
             },
         }),
-        [id, context.open, context.close]
+        [id, open, close]
     );
 };

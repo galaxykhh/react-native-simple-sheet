@@ -17,11 +17,6 @@ import {
 import { SheetStyleProps } from './Sheet';
 import { BottomSheet } from './BottomSheet';
 
-export type SheetHandler = {
-    show: () => void;
-    hide: () => void;
-};
-
 export type SimpleSheetBasicProps = {
     /**
      * The `visible` prop determines whether the bottom sheet is visible. The animation operates based on the visible value.
